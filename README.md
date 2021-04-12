@@ -1,6 +1,6 @@
 ## firstNodeProject
 
-> "/" returns a json object with quotes and their authors  
+> "/" returns an array of 1642 json objects with quotes and their authors  
  example: 
  ```
     {
