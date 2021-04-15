@@ -17,7 +17,7 @@ app.listen(3000);
 app.get('/', (req, res) => {
 
     //setting status to file sent https://stackoverflow.com/questions/26066785/proper-way-to-set-response-status-and-json-content-in-a-rest-api-made-with-nodej
-    res.status(200).sendFile('data.json', { root: __dirname + '/views'});
+    res.status(200).sendFile('data.json', { root: __dirname + '/public'});
 })
 
 //api for custom random number between 0 and requested num https://www.robinwieruch.de/node-express-server-rest-api
@@ -58,6 +58,6 @@ app.get(`/api/random/:num`, (req, res) => {
 
 //404 page
 app.use((req, res) => {
-    //res.status(404).sendFile('./views/404.html', { root: __dirname });
+    //res.status(404).sendFile('./public/404.html', { root: __dirname });
     res.status(404).send({ error: true, status: 404, message: 'Oops, file not found'});
 })
