@@ -17,10 +17,10 @@ app.listen(3000);
 app.get('/', (req, res) => {
 
     //setting status to file sent https://stackoverflow.com/questions/26066785/proper-way-to-set-response-status-and-json-content-in-a-rest-api-made-with-nodej
-    res.status(200).sendFile('data.json', { root: __dirname + '/public'});
+    res.status(200).sendFile('data.json', { root: __dirname + '/public' });
 })
 
-//api for custom random number between 0 and requested num https://www.robinwieruch.de/node-express-server-rest-api
+//api for counting the vowels within a string
 app.get(`/api/count-vowels/:string`, (req, res) => {
 
     //storing sent string in text
@@ -30,9 +30,9 @@ app.get(`/api/count-vowels/:string`, (req, res) => {
     function getVowels(str) {
         var m = str.match(/[aeiou]/gi);
         return m === null ? 0 : m.length;
-      }
+    }
 
-    //sending a random number between 0 and num request parameter
+    //sending a json object containing the entered text and the number of vowels in it
     res.status(200).send({ text, vowels: getVowels(text) });
 })
 
@@ -59,5 +59,5 @@ app.get(`/api/random/:num`, (req, res) => {
 //404 page
 app.use((req, res) => {
     //res.status(404).sendFile('./public/404.html', { root: __dirname });
-    res.status(404).send({ error: true, status: 404, message: 'Oops, file not found'});
+    res.status(404).send({ error: true, status: 404, message: 'Oops, file not found' });
 })
