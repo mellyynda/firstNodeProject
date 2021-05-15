@@ -35,6 +35,9 @@ app.get(`/api/count-vowels/:string`, (req, res) => {
 
     //storing sent string in text
     const text = req.params.string;
+    /* we can also use:
+    const text = req.query.text; 
+     and call with: http:localhost:3000/api/count-vowels?text="the text goes here"*/
 
     //small regex that counts vowels: https://stackoverflow.com/questions/29450399/counting-number-of-vowels-in-a-string-with-javascript
     function getVowels(str) {
@@ -68,9 +71,9 @@ app.get('/api/random', (req, res) => {
 
     //lodash get random number between
     const number = _.random(0, 1023);
-
+    //const number = undefined;
     //sending a random number between 0 and 1023
-    res.send({ number, haveFun: 'yes', newThing: 'keep going' });
+    res.send({ number });
 })
 
 //api for custom random number between 0 and requested num https://www.robinwieruch.de/node-express-server-rest-api
