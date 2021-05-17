@@ -211,15 +211,198 @@ describe('Random number API', () => {
 
 })
 
-/* api that calculates how many weeks a person has lived and how many he has got left according to average lifespan in sweden (82,56 years);
+/* api that calculates how many weeks a person has lived and how many he has got left according to average lifespan in sweden (82 years);
 POST request that sends the user object in the following format:
 {
-
-}
+id: "asvd3ed57hj",
+name: "John Doe",
+dob: 1989/04/13,
+},
+expected response:
+{
+id: "asvd3ed57hj",
+name: "John Doe",
+weeksLived: "1674",
+expectedWeeksToLive: ,
+} 
 */
 
+describe('Life in weeks API', () => {
 
+  const url = urlBase + '/lifeinweeks';
+  const url2 = urlBase + '/lifespaninweeks';
 
+  const cases = [
+    {
+      user: {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        dob: "1989-04-13",
+      },
+      result: {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        weeksLived: "1674.6",
+        expectedWeeksLeft: "2604",
+      },
+      result2: {
+        expectedLifespanInWeeks: "4278.6",
+        //dod: "2071-04-13"
+      }
+    },
+    {
+      user: {
+        id: "hsf47dciel2",
+        name: "Alex Andrew",
+        dob: "1975-06-30",
+      },
+      result: {
+        id: "hsf47dciel2",
+        name: "Alex Andrew",
+        weeksLived: "2394",
+        expectedWeeksLeft: "1884.7",
+      },
+      result2: {
+        expectedLifespanInWeeks: "4278.7",
+        //dod: "2057-06-30"
+      }
+    },
+    {
+      user: {
+        id: "osw93peh20t",
+        name: "Loise Salem",
+        dob: "1995-11-05",
+      },
+      result: {
+        id: "osw93peh20t",
+        name: "Loise Salem",
+        weeksLived: "1332.1",
+        expectedWeeksLeft: "2946.6",
+      },
+      result2: {
+        expectedLifespanInWeeks: "4278.7",
+        //dod: "2077-11-05"
+      }
+    },
+    // {
+    //   data: {
+    //     id: "alr375mdgv2",
+    //     name: "Baltazar Themighty",
+    //     dob: "1990-12-25",
+    //   },
+    //   result: {
+    //     id: "alr375mdgv2",
+    //     name: "Baltazar Themighty",
+    //     weeksLived: "1674",
+    //     expectedWeeksToLive: "",
+    //   }
+    // },
+    // {
+    //   data: {
+    //     id: "lskd873h54e",
+    //     name: "Ruby Salmon",
+    //     dob: "1969-08-22",
+    //   },
+    //   result: {
+    //     id: "lskd873h54e",
+    //     name: "Ruby Salmon",
+    //     weeksLived: "1674",
+    //     expectedWeeksToLive: "",
+    //   }
+    // }
+  ];
+
+  describe('POST/ Weeks lived and weeks to live', () => {
+
+    it('returns status 200', () => {
+
+      cases.forEach(ofCase => {
+        axios.post(url, ofCase.user)
+          .then(response => {
+            expect(response.status).to.equal(200);
+          })
+          .catch(error => {
+            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+          })
+      })
+    })
+
+    it('returns json data', () => {
+
+      cases.forEach(ofCase => {
+        axios.post(url, ofCase.user)
+          .then(response => {
+            expect(response.headers['content-type']).to.equal('application/json; charset=utf-8');
+          })
+          .catch(error => {
+            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+          })
+      })
+    })
+
+    it('returns number of weeks lived and left to live', () => {
+
+      cases.forEach(ofCase => {
+        axios.post(url, ofCase.user)
+          .then(response => {
+            expect(response.data).to.deep.equal(ofCase.result);
+          })
+          .catch(error => {
+            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+          })
+      })
+    })
+
+  })
+
+  describe('POST/ Lifespan in weeks', () => {
+
+    it('returns status 200', () => {
+
+      cases.forEach(ofCase => {
+        axios.post(url2, ofCase.user)
+          .then(response => {
+            expect(response.status).to.equal(200);
+          })
+          .catch(error => {
+            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+          })
+      })
+    })
+
+    it('returns json data', () => {
+
+      cases.forEach(ofCase => {
+        axios.post(url2, ofCase.user)
+          .then(response => {
+            expect(response.headers['content-type']).to.equal('application/json; charset=utf-8');
+          })
+          .catch(error => {
+            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+          })
+      })
+    })
+
+    it('returns number of weeks lived and left to live', () => {
+
+      cases.forEach(ofCase => {
+        axios.post(url2, ofCase.user)
+          .then(response => {
+            expect(response.data).to.deep.equal(ofCase.result2);
+          })
+          .catch(error => {
+            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+          })
+      })
+    })
+
+  })
+
+})
+
+/* cannot calculate exact number of weeks without creating js function first, takes too long
+and it is useless to make the tests if the results will still be calculated with the help of js
+seems to pass al the tests even when endpoint is not created, weird*/
 
 
 

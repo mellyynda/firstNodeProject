@@ -53,7 +53,7 @@ app.get(`/api/count-vowels/:string`, (req, res) => {
 app.post(`/api/count-vowels`, (req, res) => {
 
     //storing sent string in text
-    console.log(req.body.text);
+    //console.log(req.body.text);
     const text = req.body.text;
 
     //small regex that counts vowels: https://stackoverflow.com/questions/29450399/counting-number-of-vowels-in-a-string-with-javascript
