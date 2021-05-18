@@ -7,6 +7,9 @@ const express = require('express');
 //imported lodash library
 const _ = require('lodash');
 
+//importing custom functions modules
+const { lifeInWeeks, lifeSpanInWeeks } = require('./life');
+
 //stored one express instance in app
 const app = express();
 
@@ -84,6 +87,23 @@ app.get(`/api/random/:num`, (req, res) => {
 
     //sending a random number between 0 and num request parameter
     res.status(200).send({ number });
+})
+
+//TDD endpoint for returning life in weeks number
+app.post('/lifeinweeks', (req, res) => {
+    //geting user object from request body
+    const user = req.body;
+
+    //getting response object from imported function from life.js
+    res.status(200).send(lifeInWeeks(user));
+})
+
+//TDD endpoint for returning lifespan in number of weeks
+app.post('/lifespaninweeks', (req, res) => {
+    //geting user object from request body
+    const user = req.body;
+    //getting response object from imported function from life.js
+    res.status(200).send(lifeSpanInWeeks(user));
 })
 
 //404 page

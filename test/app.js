@@ -117,9 +117,11 @@ describe('Vowel counting API', () => {
 
   })
 
-  // ===============================================
-  //post request failed trials. Could not log response with request library. Also did not understand how to send data in request body
-  // ===============================================
+  /* =====================================================================
+  post request failed trials. Could not log response with request library. 
+  Did not understand how to send data in request(library) body.
+  According to their documentation the library is deprecated, used axios.
+  ======================================================================*/
   // describe('POST/ grabs text from body', () => {
   //   const options = {
   //     url: 'http://localhost:3000/api/count-vowels',
@@ -141,8 +143,6 @@ describe('Vowel counting API', () => {
   //     //   .post('/api/count-vowels')
   //     //   .send({ text: "auei" })
 
-
-
   //     // expect(res.body).to.equal(JSON.stringify({ "text": "auei", "vowels": 4 }));
 
   //     // console.log(res);
@@ -159,24 +159,27 @@ describe('Random number API', () => {
     const path = urlBase + "/api/random";
 
     //checked for status to be 200
-    it('returns status 200', () => {
+    it('returns status 200', (done) => {
       request(path, (err, res, body) => {
         expect(res.statusCode).to.equal(200);
+        done();
       })
     })
 
     //checked for content-type to be application/json
-    it('returns an object', () => {
+    it('returns an object', (done) => {
       request(path, (err, res, body) => {
         //expect(typeof JSON.parse(body)).to.equal('object');
         expect(res.headers['content-type']).to.equal('application/json; charset=utf-8');
+        done();
       })
     })
 
     //checked for data to be a finite number above -1 and below 1023
-    it('returns a number between 0 and 1023', () => {
+    it('returns a number between 0 and 1023', (done) => {
       request(path, (err, res, body) => {
         expect(JSON.parse(body).number).to.be.finite.and.to.be.above(-1).but.to.not.be.above(1023);
+        done();
       })
     })
 
@@ -186,24 +189,27 @@ describe('Random number API', () => {
     const path = urlBase + "/api/random/5";
 
     //checked for status to be 200
-    it('returns status 200', () => {
+    it('returns status 200', (done) => {
       request(path, (err, res, body) => {
         expect(res.statusCode).to.equal(200);
+        done();
       })
     })
 
     //checked for content-type to be application/json
-    it('returns an object', () => {
+    it('returns an object', (done) => {
       request(path, (err, res, body) => {
         //expect(typeof JSON.parse(body)).to.equal('object');
         expect(res.headers['content-type']).to.equal('application/json; charset=utf-8');
+        done();
       })
     })
 
     //checked for data to be a finite number above -1 and below 5 hence we are sending 5 as max in the url(see line 186)
-    it('returns a number between 0 and max', () => {
+    it('returns a number between 0 and max', (done) => {
       request(path, (err, res, body) => {
         expect(JSON.parse(body).number).to.be.finite.and.to.be.above(-1).but.to.not.be.above(5);
+        done();
       })
     })
 
@@ -211,7 +217,9 @@ describe('Random number API', () => {
 
 })
 
-/* api that calculates how many weeks a person has lived and how many he has got left according to average lifespan in sweden (82 years);
+/* DESCRIPTION =================================================================================
+API that calculates how many weeks a person has lived and how many he has got left according to 
+average lifespan in sweden (82 years);
 POST request that sends the user object in the following format:
 {
 id: "asvd3ed57hj",
@@ -220,189 +228,195 @@ dob: 1989/04/13,
 },
 expected response:
 {
-id: "asvd3ed57hj",
-name: "John Doe",
-weeksLived: "1674",
-expectedWeeksToLive: ,
-} 
-*/
+  id: "asvd3ed57hj",
+  name: "John Doe",
+  livedWeeks: 1675,
+  weeksToLive: 2604,
+}
+===============================================================================================*/
 
 describe('Life in weeks API', () => {
 
   const url = urlBase + '/lifeinweeks';
   const url2 = urlBase + '/lifespaninweeks';
 
+  /* //tried to use an array of users and responses and forEach on the array to make the requests
+     // DID NOT WORK
   const cases = [
-    {
-      user: {
-        id: "asvd3ed57hj",
-        name: "John Doe",
-        dob: "1989-04-13",
-      },
-      result: {
-        id: "asvd3ed57hj",
-        name: "John Doe",
-        weeksLived: "1674.6",
-        expectedWeeksLeft: "2604",
-      },
-      result2: {
-        expectedLifespanInWeeks: "4278.6",
-        //dod: "2071-04-13"
-      }
-    },
-    {
-      user: {
-        id: "hsf47dciel2",
-        name: "Alex Andrew",
-        dob: "1975-06-30",
-      },
-      result: {
-        id: "hsf47dciel2",
-        name: "Alex Andrew",
-        weeksLived: "2394",
-        expectedWeeksLeft: "1884.7",
-      },
-      result2: {
-        expectedLifespanInWeeks: "4278.7",
-        //dod: "2057-06-30"
-      }
-    },
-    {
-      user: {
-        id: "osw93peh20t",
-        name: "Loise Salem",
-        dob: "1995-11-05",
-      },
-      result: {
-        id: "osw93peh20t",
-        name: "Loise Salem",
-        weeksLived: "1332.1",
-        expectedWeeksLeft: "2946.6",
-      },
-      result2: {
-        expectedLifespanInWeeks: "4278.7",
-        //dod: "2077-11-05"
-      }
-    },
-    // {
-    //   data: {
-    //     id: "alr375mdgv2",
-    //     name: "Baltazar Themighty",
-    //     dob: "1990-12-25",
-    //   },
-    //   result: {
-    //     id: "alr375mdgv2",
-    //     name: "Baltazar Themighty",
-    //     weeksLived: "1674",
-    //     expectedWeeksToLive: "",
-    //   }
-    // },
-    // {
-    //   data: {
-    //     id: "lskd873h54e",
-    //     name: "Ruby Salmon",
-    //     dob: "1969-08-22",
-    //   },
-    //   result: {
-    //     id: "lskd873h54e",
-    //     name: "Ruby Salmon",
-    //     weeksLived: "1674",
-    //     expectedWeeksToLive: "",
-    //   }
-    // }
-  ];
+     {
+       user: {
+         id: "asvd3ed57hj",
+         name: "John Doe",
+         dob: "1989-04-13",
+       },
+       result: {
+         id: "asvd3ed57hj",
+         name: "John Doe",
+         weeksLived: "1675",
+         expectedWeeksLeft: "2604",
+       },
+       result2: {
+         expectedLifespanInWeeks: "4279",
+         //dod: "2071-04-13"
+       }
+     },
+     {
+       user: {
+         id: "hsf47dciel2",
+         name: "Alex Andrew",
+         dob: "1975-06-30",
+       },
+       result: {
+         id: "hsf47dciel2",
+         name: "Alex Andrew",
+         weeksLived: "2394",
+         expectedWeeksLeft: "1885",
+       },
+       result2: {
+         expectedLifespanInWeeks: "4279",
+         //dod: "2057-06-30"
+       }
+     },
+     {
+       user: {
+         id: "osw93peh20t",
+         name: "Loise Salem",
+         dob: "1995-11-05",
+       },
+       result: {
+         id: "osw93peh20t",
+         name: "Loise Salem",
+         weeksLived: "1332",
+         expectedWeeksLeft: "2947",
+       },
+       result2: {
+         expectedLifespanInWeeks: "4279",
+         //dod: "2077-11-05"
+       }
+     }
+   ];*/
 
   describe('POST/ Weeks lived and weeks to live', () => {
 
-    it('returns status 200', () => {
-
-      cases.forEach(ofCase => {
-        axios.post(url, ofCase.user)
-          .then(response => {
-            expect(response.status).to.equal(200);
-          })
-          .catch(error => {
-            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
-          })
+    it('returns status 200', (done) => {
+      axios.post(url, {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        dob: "1989-04-13",
       })
+        .then(function (response) {
+          //console.log(response.data, response.status);
+          expect(response.status).to.equal(200);
+          done();
+        })
+        .catch(function (error) {
+          console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+        })
     })
 
-    it('returns json data', () => {
-
-      cases.forEach(ofCase => {
-        axios.post(url, ofCase.user)
-          .then(response => {
-            expect(response.headers['content-type']).to.equal('application/json; charset=utf-8');
-          })
-          .catch(error => {
-            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
-          })
+    it('returns json data', (done) => {
+      axios.post(url, {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        dob: "1989-04-13",
       })
+        .then(response => {
+          expect(response.headers['content-type']).to.equal('application/json; charset=utf-8');
+          done();
+        })
+        .catch(error => {
+          console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+        })
     })
 
-    it('returns number of weeks lived and left to live', () => {
-
-      cases.forEach(ofCase => {
-        axios.post(url, ofCase.user)
-          .then(response => {
-            expect(response.data).to.deep.equal(ofCase.result);
-          })
-          .catch(error => {
-            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
-          })
+    it('returns number of weeks lived and left to live', (done) => {
+      axios.post(url, {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        dob: "1989-04-13",
       })
+        .then(response => {
+          expect(response.data).to.deep.equal({
+            id: "asvd3ed57hj",
+            name: "John Doe",
+            livedWeeks: 1675,
+            weeksToLive: 2604,
+          });
+          done();
+        })
+        .catch(error => {
+          console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+        })
     })
 
   })
 
   describe('POST/ Lifespan in weeks', () => {
 
-    it('returns status 200', () => {
-
-      cases.forEach(ofCase => {
-        axios.post(url2, ofCase.user)
-          .then(response => {
-            expect(response.status).to.equal(200);
-          })
-          .catch(error => {
-            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
-          })
+    it('returns status 200', (done) => {
+      axios.post(url2, {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        dob: "1989-04-13",
       })
+        .then(response => {
+          expect(response.status).to.equal(200);
+          done();
+        })
+        .catch(error => {
+          console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+        })
     })
 
-    it('returns json data', () => {
-
-      cases.forEach(ofCase => {
-        axios.post(url2, ofCase.user)
-          .then(response => {
-            expect(response.headers['content-type']).to.equal('application/json; charset=utf-8');
-          })
-          .catch(error => {
-            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
-          })
+    it('returns json data', (done) => {
+      axios.post(url2, {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        dob: "1989-04-13",
       })
+        .then(function (response) {
+          expect(response.headers['content-type']).to.equal('application/json; charset=utf-8');
+          done();
+        })
+        .catch(error => {
+          console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+        })
     })
 
-    it('returns number of weeks lived and left to live', () => {
-
-      cases.forEach(ofCase => {
-        axios.post(url2, ofCase.user)
-          .then(response => {
-            expect(response.data).to.deep.equal(ofCase.result2);
-          })
-          .catch(error => {
-            console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
-          })
+    it('returns number of weeks lived and left to live', (done) => {
+      axios.post(url2, {
+        id: "asvd3ed57hj",
+        name: "John Doe",
+        dob: "1989-04-13",
       })
+        .then(response => {
+          expect(response.data).to.deep.equal({
+            expectedLifetimeInWeeks: 4279
+          });
+          done();
+        })
+        .catch(error => {
+          console.log("error occured, status:", error.response.status, " status text:", error.response.statusText);
+        })
     })
 
   })
 
 })
 
-/* cannot calculate exact number of weeks without creating js function first, takes too long
-and it is useless to make the tests if the results will still be calculated with the help of js
-seems to pass al the tests even when endpoint is not created, weird*/
+/*
+10:00 AM got error on tests and it took quite some time to figure the problem, it was the format
+of the data sent in the post it was req.body.user(fixed by changing to req.body)
+
+11:23 AM realized the tests were badly written and not working, added done and fixed, now have to
+solve failed tests
+
+11:40 DONE! fixed failed tests by removing forEach and realized i used a different format for the
+json result.
+
+CONCLUSION:tests were fixed after creating endpoint, slight changes were made to the endpoint to
+pass the tests
+*/
 
 
 
