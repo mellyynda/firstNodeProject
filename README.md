@@ -37,3 +37,28 @@ example:
   "number": 917330801
   }
 ```
+
+"/lifeinweeks" and "/lifespaninweeks" API that calculates how many weeks a person has lived and how many he has got left according to average lifespan in sweden (82 years);
+POST request that sends the user object in the following format:
+```
+{
+id: "asvd3ed57hj",
+name: "John Doe",
+dob: 1989/04/13
+}
+```
+expected responses:
+```
+{
+  id: "asvd3ed57hj",
+  name: "John Doe",
+  livedWeeks: 1675,
+  weeksToLive: 2604
+}
+```
+and
+```
+{
+  expectedLifetimeInWeeks: 4279
+}
+```
